@@ -1,4 +1,4 @@
 # prostiwlsn-s-YT2mp3Bot
-Telegram bot for downloading YouTube videos
+Telegram bot for converting YouTube videos to mp3 using VideoLibrary
 
 ffmpeg required
