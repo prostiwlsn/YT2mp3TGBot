@@ -14,23 +14,30 @@ namespace YT2mp3.Services
             _configuration = configuration;
         }
 
-        public async Task HandleMessage(Update update)
+        public async Task HandleMessage(UpdateInfo update)
         {
-            Task pendingMessage = SendMessage(update.message.chat.id, "Принято в обработку");
+            Task pendingMessage = SendMessage(update.ChatId, "Принято в обработку");
             string newFile = Guid.NewGuid().ToString();
 
             try
             {
-                await GenerateFile(update.message.text.Replace(" ", ""), newFile);
-                await SendFile(update.message.chat.id, newFile);
-                Converter.DeleteFile(newFile);
+                await GenerateFile(update.Text.Replace(" ", ""), newFile);
+                await SendFile(update.ChatId, newFile);
+
+                string folderPath = _configuration.GetValue<string>("FileDirectory")!;
+
+                Console.WriteLine(folderPath + newFile);
+
+                Converter.DeleteFile(folderPath + newFile + ".mp3");
+                Converter.DeleteFile(folderPath + newFile + ".mp4");
             }
             catch (Exception ex)
             {
-                await SendMessage(update.message.chat.id, ex.Message);
+                await SendMessage(update.ChatId, ex.Message);
             }
 
             await pendingMessage;
+            pendingMessage.Dispose();
         }
         public async Task SendFile(int chatId, string fileName)
         {
