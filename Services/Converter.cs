@@ -31,7 +31,15 @@ namespace YT2mp3.Services
 
         public static async Task DeleteFile(string path)
         {
-
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                Console.WriteLine("File deleted");
+            }
+            else
+            {
+                Console.WriteLine("File not found");
+            }
         }
     }
 }

@@ -23,6 +23,7 @@ namespace YT2mp3.Services
             {
                 await GenerateFile(update.message.text.Replace(" ", ""), newFile);
                 await SendFile(update.message.chat.id, newFile);
+                Converter.DeleteFile(newFile);
             }
             catch (Exception ex)
             {
@@ -47,7 +48,6 @@ namespace YT2mp3.Services
                     streamContent.Headers.ContentType = new MediaTypeHeaderValue("audio/mpeg");
                     streamContent.Headers.Add("Content-Disposition", $"form-data; name=\"audio\"; filename=\"{Path.GetFileName(folderPath + fileName + ".mp3")}\"");
                     multipartFormDataContent.Add(streamContent, "audio", Path.GetFileName(folderPath + fileName + ".mp3"));
-                    //multipartFormDataContent.Add(new StringContent(chatId), "chat_id");
 
                     using (var message = await http.PostAsync(url, multipartFormDataContent))
                     {
