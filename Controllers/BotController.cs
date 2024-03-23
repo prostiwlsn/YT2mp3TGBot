@@ -15,8 +15,8 @@ namespace YT2mp3.Controllers
         private readonly ILogger<BotController> _logger;
         private readonly IMessageHandler _handler;
 
-        private Regex _textRegex = new Regex("(?<=\"text\":\").*(?=\")");
-        private Regex _chatIdRegex = new Regex("(?<=\"chat\":{\"id\":)\\d+");
+        private Regex _textRegex = new Regex("(?<=\"text\":\")[^\"]*(?=\"(,|}))");
+        private Regex _chatIdRegex = new Regex("(?<=\"chat\":{\"id\":)\\d+(?=,)");
 
         public BotController(ILogger<BotController> logger, IMessageHandler messageHandler)
         {
@@ -31,6 +31,9 @@ namespace YT2mp3.Controllers
 
             MatchCollection textMatches = _textRegex.Matches(updateString);
             MatchCollection idMatches = _chatIdRegex.Matches(updateString);
+
+            if(textMatches.Count == 0 || idMatches.Count == 0)
+                return NotFound();
 
             Console.WriteLine(textMatches[0]);
             Console.WriteLine(idMatches[0]);
