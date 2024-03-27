@@ -16,7 +16,7 @@ namespace YT2mp3.Services
 
         public async Task HandleMessage(UpdateInfo update)
         {
-            Task pendingMessage = SendMessage(update.ChatId, "Принято в обработку");
+            Task pendingMessage = SendMessage(update.ChatId, "In processing");
             string newFile = Guid.NewGuid().ToString();
 
             try
