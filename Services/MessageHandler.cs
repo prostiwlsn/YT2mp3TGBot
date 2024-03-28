@@ -65,7 +65,7 @@ namespace YT2mp3.Services
             }
         }
 
-        private async Task SendMessage(int id, string message)
+        public async Task SendMessage(int id, string message)
         {
             using (HttpClient http = new HttpClient())
             {

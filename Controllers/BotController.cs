@@ -33,7 +33,13 @@ namespace YT2mp3.Controllers
             MatchCollection idMatches = _chatIdRegex.Matches(updateString);
 
             if(textMatches.Count == 0 || idMatches.Count == 0)
-                return NotFound();
+            {
+
+                if (idMatches.Count != 0)
+                    _handler.SendMessage(int.Parse(idMatches[0].Value), "Uri not found");
+
+                return Ok();
+            }
 
             Console.WriteLine(textMatches[0]);
             Console.WriteLine(idMatches[0]);
